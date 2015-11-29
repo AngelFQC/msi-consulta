@@ -6,13 +6,13 @@ define([
 		iniciarApp: function () {
 			var operativosColeccion = new OperativosColeccion();
 
-			var promesaPeticion = $.getJSON({
-				url: 'http://api.datosabiertos.msi.gob.pe/datastreams/invoke/APOYO-OPERA-A-PNP',
-				data: {
+			var promesaPeticion = $.getJSON(
+				'http://api.datosabiertos.msi.gob.pe/datastreams/invoke/APOYO-OPERA-A-PNP',
+				{
 					auth_key: '21d66613f28deea018bc3d1b0f8fcd7e79c5bded',
 					output: 'json_array'
 				}
-			});
+			);
 
 			$.when(promesaPeticion).done(function (datosApi) {
 				$.each(datosApi.result, function (index, dato) {
