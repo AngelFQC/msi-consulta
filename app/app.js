@@ -6,12 +6,15 @@ define([
 		iniciarApp: function () {
 			var operativosColeccion = new OperativosColeccion();
 
-			var promesaPeticion = $.getJSON(
-				'http://api.datosabiertos.msi.gob.pe/datastreams/invoke/APOYO-OPERA-A-PNP',
+			var promesaPeticion = $.ajax(
 				{
-					auth_key: '21d66613f28deea018bc3d1b0f8fcd7e79c5bded',
-					output: 'json_array',
-					limit: 10
+					url: 'http://api.datosabiertos.msi.gob.pe/datastreams/invoke/APOYO-OPERA-A-PNP',
+					jsonp: 'callback',
+					dataType: 'jsonp',
+					data: {
+						auth_key: '21d66613f28deea018bc3d1b0f8fcd7e79c5bded',
+						output: 'json_array',
+					}
 				}
 			);
 
