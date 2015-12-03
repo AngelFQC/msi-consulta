@@ -1,7 +1,8 @@
 define([
 	'jquery',
-	'collection/operativos'
-], function ($, OperativosColeccion) {
+	'collection/operativos',
+	'view/operativos'
+], function ($, OperativosColeccion, OperativosVista) {
 	var App = {
 		iniciarApp: function () {
 			var operativosColeccion = new OperativosColeccion();
@@ -35,6 +36,11 @@ define([
 						});
 					}
 				});
+
+				var operativosVista = new OperativosVista({
+					collection: operativosColeccion
+				});
+				operativosVista.render();
 			});
 		}
 	};
