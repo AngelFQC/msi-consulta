@@ -10,7 +10,8 @@ define([
 				'http://api.datosabiertos.msi.gob.pe/datastreams/invoke/APOYO-OPERA-A-PNP',
 				{
 					auth_key: '21d66613f28deea018bc3d1b0f8fcd7e79c5bded',
-					output: 'json_array'
+					output: 'json_array',
+					limit: 10
 				}
 			);
 
