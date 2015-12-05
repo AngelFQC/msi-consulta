@@ -1,9 +1,11 @@
 define([
 	'jquery',
 	'collection/operativos',
-	'view/operativos',
-	'chart'
-], function ($, OperativosColeccion, OperativosVista, Chart) {
+	'view/operativos'
+], function ($, OperativosColeccion, OperativosVista) {
+	$.getScript('libs/highcharts/highcharts.js');
+	$.getScript('libs/highcharts/modules/exporting.js');
+
 	var App = {
 		iniciarApp: function () {
 			var operativosColeccion = new OperativosColeccion();
@@ -56,34 +58,39 @@ define([
 					cantidades.push(operativosFiltrados.length);
 				}
 
-				console.log(categorias, cantidades);
-
-				var operativosVista = new OperativosVista({
-					collection: operativosColeccion
-				});
-				operativosVista.render();
-
-				//Generar gráfico
-				var contexto = document.getElementById('operativos-grafico')
-					.getContext('2d');
-
-				var data = {
-					labels: categorias,
-					datasets: [
-						{
-							label: "My First dataset",
-				            fillColor: "rgba(220,220,220,0.2)",
-				            strokeColor: "rgba(220,220,220,1)",
-				            pointColor: "rgba(220,220,220,1)",
-				            pointStrokeColor: "#fbb",
-				            pointHighlightFill: "#fff",
-				            pointHighlightStroke: "rgba(220,220,220,1)",
-				            data: cantidades
-						}
-					]
-				};
-
-				var grafico = new Chart(contexto).Bar(data, {});
+				$('#operativos-grafico').highcharts({
+			        title: {
+			            text: 'Apoyo a operativos PNP',
+			        },
+			        subtitle: {
+			            text: 'Ejemplo gráfico con API ',
+			        },
+			        xAxis: {
+			            categories: categorias
+			        },
+			        yAxis: {
+			            title: {
+			                text: 'Cantidad de operativos'
+			            },
+			            plotLines: [{
+			                value: 0,
+			                width: 1,
+			                color: '#808080'
+			            }]
+			        },
+			        legend: {
+			            layout: 'vertical',
+			            align: 'center',
+			            verticalAlign: 'bottom',
+			            borderWidth: 0
+			        },
+			        series: [
+			        	{
+			            	name: 'Operativos',
+			            	data: cantidades
+			        	}
+			        ]
+			    });
 			});
 		}
 	};
