@@ -1,8 +1,9 @@
 define([
 	'jquery',
 	'collection/operativos',
-	'view/operativos'
-], function ($, OperativosColeccion, OperativosVista) {
+	'view/operativos',
+	'chart'
+], function ($, OperativosColeccion, OperativosVista, Chart) {
 	var App = {
 		iniciarApp: function () {
 			var operativosColeccion = new OperativosColeccion();
@@ -14,7 +15,7 @@ define([
 					dataType: 'jsonp',
 					data: {
 						auth_key: '21d66613f28deea018bc3d1b0f8fcd7e79c5bded',
-						output: 'json_array',
+						output: 'json_array'
 					}
 				}
 			);
@@ -37,10 +38,52 @@ define([
 					}
 				});
 
+				//agrupar por categorías
+				var modelosPorCategorias = operativosColeccion.indexBy('categoria');
+
+				var categorias = new Array();
+				var cantidades = new Array();
+
+				for (categoria in modelosPorCategorias) {
+					//generar etiquetas de la categoría
+					categorias.push(categoria);
+
+					//generar datos de la categoría
+					var operativosFiltrados = operativosColeccion.where({
+						categoria: categoria
+					});
+
+					cantidades.push(operativosFiltrados.length);
+				}
+
+				console.log(categorias, cantidades);
+
 				var operativosVista = new OperativosVista({
 					collection: operativosColeccion
 				});
 				operativosVista.render();
+
+				//Generar gráfico
+				var contexto = document.getElementById('operativos-grafico')
+					.getContext('2d');
+
+				var data = {
+					labels: categorias,
+					datasets: [
+						{
+							label: "My First dataset",
+				            fillColor: "rgba(220,220,220,0.2)",
+				            strokeColor: "rgba(220,220,220,1)",
+				            pointColor: "rgba(220,220,220,1)",
+				            pointStrokeColor: "#fbb",
+				            pointHighlightFill: "#fff",
+				            pointHighlightStroke: "rgba(220,220,220,1)",
+				            data: cantidades
+						}
+					]
+				};
+
+				var grafico = new Chart(contexto).Bar(data, {});
 			});
 		}
 	};
